@@ -1,0 +1,29 @@
+# configure aws : 
+aws configure --profile test-profile
+
+terraform init      # Initializes the project
+terraform plan      # Shows what Terraform will do
+terraform apply     # Applies the changes (creates the bucket)
+terraform destroy   # Deletes the resource
+
+# By default, Terraform loads terraform.tfvars. If you name it something else, use:
+terraform apply -var-file="myvars.tfvars"
+
+
+# Declare secret vars (without tfvars and no visible)
+export TF_VAR_region="us-east-1"
+
+# Generate graph
+terraform graph
+dot -Tpng > graph.dot graph.png
+OR
+
+terraform graph | dot -Tpng > graph.png
+
+
+# Import and existing instance
+terraform import aws_instance.my_instance i-0abcd1234efgh5678 
+# inspect the imported resource’s details
+terraform show
+
+
