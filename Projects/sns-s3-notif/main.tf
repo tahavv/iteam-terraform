@@ -21,6 +21,30 @@ resource "aws_sns_topic" "s3_alerts" {
   name = var.sns_topic_name
 }
 
+# SNS Topic Policy
+resource "aws_sns_topic_policy" "sns_policy" {
+  arn = aws_sns_topic.s3_alerts.arn
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "s3.amazonaws.com"
+        },
+        Action   = "SNS:Publish",
+        Resource = aws_sns_topic.s3_alerts.arn,
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" : aws_s3_bucket.bucket.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
 # SNS Email Subscription
 resource "aws_sns_topic_subscription" "email_alert" {
   topic_arn = aws_sns_topic.s3_alerts.arn

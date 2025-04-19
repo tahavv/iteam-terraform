@@ -17,3 +17,6 @@ crash.log
 # IDE files
 .idea/
 .vscode/
+
+taha_credentials.csv
+access
